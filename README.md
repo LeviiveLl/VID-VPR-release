@@ -3,19 +3,6 @@
 Official implementation of **VLM Injection Distillation for Image-Only Visual Place Recognition**.
 A VLM-conditioned teacher exposes layer-wise injection residuals. The student learns a depth-conditioned synthetic-prior memory and router, then performs image-only nearest-neighbor retrieval at test time.
 
-## What is included
-
-- `vid_vpr/models/teacher.py`: VLM-conditioned DINOv2-Large teacher.
-- `vid_vpr/models/student.py`: image-only backbone and synthetic-prior router.
-- `vid_vpr/models/aggregation.py`: layer-aware balanced transport aggregation.
-- `vid_vpr/models/vid_vpr.py`: final deployment model.
-- `vid_vpr/train_teacher.py`: teacher training.
-- `vid_vpr/train_distillation.py`: Stage-1/Stage-2 intervention-residual distillation.
-- `vid_vpr/train_retrieval.py`: final retrieval and teacher-utility adaptation.
-- `vid_vpr/evaluate.py`: benchmark descriptor extraction and Recall@K.
-- `scripts/extract_vlm_states.py`: offline privileged-state extraction.
-- `checkpoints/teacher.pth` and `checkpoints/student.pth`: self-contained final weights.
-
 The release contains no datasets, VLM weights, VLM cache, or DINOv2 pretraining weights.
 
 ## Installation
