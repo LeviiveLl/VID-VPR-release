@@ -35,11 +35,12 @@ Cached files are aligned with image paths and contain `hidden_states` and `atten
 ## Checkpoints
 
 | File | Role |
-|---|---|---:|---|
-| `checkpoints/teacher.pth` | VLM-conditioned teacher | 
-| `checkpoints/student.pth` | final image-only VID-VPR |
+|---|---|
+| `checkpoints/teacher.pth` | VLM-conditioned teacher |
+| `checkpoints/student.pth` | Final image-only VID-VPR |
 
-Both files contain only `model_config` and a complete `model_state_dict`; no intermediate checkpoint is required. Note that the released final student has an 8448-D descriptor (`64 x 128 + 256`).
+Both files contain only `model_config` and a complete `model_state_dict`; no intermediate checkpoint is required. 
+
 
 ## Evaluation
 
