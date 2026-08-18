@@ -1,0 +1,39 @@
+experiment:
+  name: evaluation
+  seed: 42
+  output_root: runs
+
+model:
+  type: student
+  output_dim: 4096
+  vlm_dim: 2048
+  crossattn_heads: 16
+  crossattn_every_n: 2
+  crossattn_layer_mode: late_stride
+  bank_size: 256
+  router_dim: 512
+  top_k: 8
+  router_layers: [8, 12, 16, 20]
+  ablation_mode: full
+  teacher_path: checkpoints/teacher.pth
+  stage1_path: checkpoints/distill_stage1.pth
+  student_path: checkpoints/student.pth
+
+data:
+  benchmark_root: data/benchmarks
+  eval_vlm_cache: data/vlm/pitts30k_test
+  eval_resize: [322, 322]
+  num_workers: 8
+
+training: {}
+
+evaluation:
+  enabled: true
+  dataset_name: pitts30k
+  split: test
+  batch_size: 32
+  query_batch_size: null
+  positive_distance: 25
+  recall_values: [1, 5, 10, 100]
+  test_method: hard_resize
+  distributed: false

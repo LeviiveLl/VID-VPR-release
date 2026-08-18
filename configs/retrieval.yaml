@@ -1,0 +1,86 @@
+experiment:
+  name: stage2_teacher_utility
+  seed: 42
+  output_root: runs
+
+model:
+  type: student
+  output_dim: 4096
+  vlm_dim: 2048
+  crossattn_heads: 16
+  crossattn_every_n: 2
+  crossattn_layer_mode: late_stride
+  bank_size: 256
+  router_dim: 512
+  top_k: 8
+  router_layers: [8, 12, 16, 20]
+  ablation_mode: full
+  student_path: checkpoints/student.pth
+  teacher_path: checkpoints/teacher.pth
+  initialization_path: checkpoints/student.pth
+  variant: utility
+  num_clusters: 64
+  cluster_dim: 128
+  token_dim: 256
+  dropout: 0.3
+  sinkhorn_iters: 3
+  trainable_blocks: 0
+  prior_only: false
+  response_layers: [20, 22]
+  response_projection_dim: 16
+  response_hidden_dim: 64
+  response_max_strength: 0.5
+  response_initial_strength: 0.0
+  selective_ivp_tuning: true
+  ivp_crossattn_layers: [20, 22]
+
+data:
+  gsv_root: data/gsv_cities
+  train_vlm_cache: data/vlm/gsv
+  benchmark_root: data/benchmarks
+  train_resize: [224, 224]
+  eval_resize: [322, 322]
+  num_workers: 8
+  images_per_place: 4
+  shuffle_train: true
+
+training:
+  global_batch_size: 60
+  epochs: 4
+  learning_rate: 0.00001
+  optimizer: adamw
+  weight_decay: 0.0000000095
+  teacher_utility_weight: 1.0
+  train_cross_attention_layers: [20, 22]
+  unfreeze_last_n_blocks: 0
+
+evaluation:
+  enabled: true
+  evaluate_initialization: false
+  every_n_epochs: 1
+  dataset_name: Nordland
+  split: test
+  batch_size: 128
+  positive_distance: 25
+  recall_values: [1, 5, 10, 15, 20, 25, 100]
+  test_method: hard_resize
+  performance_floors:
+    nordland: 79.5
+    pitts30k: 93.4
+  benchmarks:
+    - name: nordland
+      dataset_name: Nordland
+      benchmark_root: data/benchmarks
+      split: test
+      batch_size: 128
+      positive_distance: 25
+      recall_values: [1, 5, 10, 15, 20, 25, 100]
+      test_method: hard_resize
+    - name: pitts30k
+      dataset_name: pitts30k
+      benchmark_root: data/benchmarks
+      split: test
+      batch_size: 128
+      positive_distance: 25
+      recall_values: [1, 5, 10, 100]
+      test_method: hard_resize

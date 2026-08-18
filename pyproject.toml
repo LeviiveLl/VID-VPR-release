@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vid-vpr"
+version = "1.0.0"
+description = "VLM injection distillation for image-only visual place recognition"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+license = {file = "LICENSE"}
+dependencies = [
+  "torch==2.10.0",
+  "torchvision==0.25.0",
+  "numpy==2.2.6",
+  "pandas==2.3.3",
+  "Pillow==12.0.0",
+  "scikit-learn==1.7.2",
+  "scipy>=1.15",
+  "faiss-cpu==1.13.2",
+  "PyYAML==6.0.3",
+  "tqdm==4.67.3",
+  "pytorch-metric-learning==2.9.0",
+]
+
+[project.optional-dependencies]
+analysis = [
+  "matplotlib==3.10.8",
+]
+vlm = [
+  "accelerate==1.13.0",
+  "transformers==5.3.0",
+]
+test = [
+  "pytest>=8.3",
+]
+
+[project.scripts]
+vid-train-teacher = "vid_vpr.train_teacher:main"
+vid-train-distillation = "vid_vpr.train_distillation:main"
+vid-train-retrieval = "vid_vpr.train_retrieval:main"
+vid-evaluate = "vid_vpr.evaluate:main"
+
+[tool.setuptools.packages.find]
+include = ["vid_vpr*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+

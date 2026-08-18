@@ -1,0 +1,47 @@
+experiment:
+  name: teacher
+  seed: 42
+  output_root: runs
+
+model:
+  type: teacher
+  output_dim: 4096
+  vlm_dim: 2048
+  crossattn_heads: 16
+  crossattn_every_n: 2
+  crossattn_layer_mode: late_stride
+  foundation_path: pretrained/dinov2_vitl14.pth
+  checkpoint_path: null
+
+data:
+  gsv_root: data/gsv_cities
+  train_vlm_cache: data/vlm/gsv
+  benchmark_root: data/benchmarks
+  eval_vlm_cache: data/vlm/pitts30k_test
+  train_resize: [322, 322]
+  eval_resize: [322, 322]
+  num_workers: 16
+  images_per_place: 4
+
+training:
+  global_batch_size: 256
+  epochs: 50
+  patience: 12
+  learning_rate: 0.0004
+  optimizer: adam
+  scheduler: cosine
+  warmup_epochs: 1.0
+  scheduler_epochs: 25
+  min_lr_ratio: 0.05
+  unfreeze_last_n_layers: 0
+  resume_path: null
+  max_steps: null
+
+evaluation:
+  enabled: true
+  dataset_name: pitts30k
+  split: test
+  batch_size: 32
+  positive_distance: 25
+  recall_values: [1, 5, 10, 100]
+  test_method: hard_resize
